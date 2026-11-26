@@ -1,0 +1,6 @@
+{
+  "name": "Aethelgard Sanctuary",
+  "description": "An interactive 3D floating fantasy island diorama featuring an ancient wizard's observatory tower, glowing turquoise stream and waterfall, cherry blossoms, bioluminescent mushrooms, and smooth Golden Sunset to Starry Aurora Night transitions.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
