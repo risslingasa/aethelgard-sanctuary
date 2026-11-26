@@ -10,7 +10,7 @@
     "clean": "next clean"
   },
   "dependencies": {
-    "@google/genai": "^2.4.0",
+    "@google/genai": "^3.6.1",
     "@hookform/resolvers": "^5.2.1",
     "@react-three/drei": "^10.7.9",
     "@react-three/fiber": "^9.8.2",
@@ -24,6 +24,7 @@
     "postcss": "^8.5.6",
     "react": "^19.2.1",
     "react-dom": "^19.2.1",
+    "server-only": "^0.0.1",
     "tailwind-merge": "^3.3.1",
     "three": "^0.187.0"
   },
