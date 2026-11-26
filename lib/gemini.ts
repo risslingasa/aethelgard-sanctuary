@@ -20,10 +20,15 @@ export class MissingGeminiApiKeyError extends Error {
 let cachedClient: GoogleGenAI | null = null;
 let cachedKeyFingerprint: string | null = null;
 
+const PLACEHOLDER_API_KEYS = new Set([
+  'MY_GEMINI_API_KEY',
+  'your_gemini_api_key_here',
+]);
+
 export function getGeminiClient(): GoogleGenAI {
   const apiKey = process.env.GEMINI_API_KEY?.trim();
 
-  if (!apiKey || apiKey === 'MY_GEMINI_API_KEY') {
+  if (!apiKey || PLACEHOLDER_API_KEYS.has(apiKey)) {
     throw new MissingGeminiApiKeyError();
   }
 
