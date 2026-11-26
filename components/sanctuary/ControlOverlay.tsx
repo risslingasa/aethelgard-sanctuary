@@ -2,7 +2,7 @@
 
 import React, { useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { Sun, Moon, Orbit, ChevronDown, ChevronUp } from 'lucide-react';
+import { Sun, Moon, Orbit, Volume2, VolumeX, ChevronDown, ChevronUp } from 'lucide-react';
 import { VIEWPOINTS, type AtmosphereMode, type ViewpointId } from './types';
 
 interface ControlOverlayProps {
@@ -12,6 +12,8 @@ interface ControlOverlayProps {
   onSelectViewpoint: (vp: ViewpointId) => void;
   autoOrbit: boolean;
   onToggleAutoOrbit: () => void;
+  soundEnabled: boolean;
+  onToggleSound: () => void;
   dockOpen: boolean;
   onToggleDock: () => void;
 }
@@ -23,6 +25,8 @@ export default function ControlOverlay({
   onSelectViewpoint,
   autoOrbit,
   onToggleAutoOrbit,
+  soundEnabled,
+  onToggleSound,
   dockOpen,
   onToggleDock,
 }: ControlOverlayProps) {
@@ -35,11 +39,13 @@ export default function ControlOverlay({
       }
       if (e.key === 'h' || e.key === 'H') {
         onToggleDock();
+      } else if (e.key === 'm' || e.key === 'M') {
+        onToggleSound();
       }
     };
     window.addEventListener('keydown', onKeyDown);
     return () => window.removeEventListener('keydown', onKeyDown);
-  }, [onToggleDock]);
+  }, [onToggleDock, onToggleSound]);
 
   return (
     <div className="pointer-events-none fixed inset-0 z-10 flex flex-col justify-between p-5 sm:p-7">
@@ -172,23 +178,47 @@ export default function ControlOverlay({
               {/* Subtle Divider */}
               <div className="hidden h-5 w-px bg-white/14 sm:block" aria-hidden="true" />
 
-              {/* Auto-Orbit Toggle */}
-              <button
-                type="button"
-                onClick={onToggleAutoOrbit}
-                aria-pressed={autoOrbit}
-                title="Toggle gentle auto-orbit"
-                className={`inline-flex items-center gap-1.5 whitespace-nowrap rounded-full px-3 py-1.5 text-xs font-medium transition-colors duration-150 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber-300 ${
-                  autoOrbit
-                    ? isNight
-                      ? 'bg-teal-400/20 text-teal-200'
-                      : 'bg-amber-400/22 text-amber-200'
-                    : 'text-stone-300 hover:bg-white/8 hover:text-white'
-                }`}
-              >
-                <Orbit className="h-3.5 w-3.5 shrink-0" aria-hidden="true" />
-                <span>Orbit</span>
-              </button>
+              {/* Auto-Orbit & Ambient Sound Toggles */}
+              <div className="flex items-center gap-1">
+                <button
+                  type="button"
+                  onClick={onToggleAutoOrbit}
+                  aria-pressed={autoOrbit}
+                  title="Toggle gentle auto-orbit"
+                  className={`inline-flex items-center gap-1.5 whitespace-nowrap rounded-full px-3 py-1.5 text-xs font-medium transition-colors duration-150 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber-300 ${
+                    autoOrbit
+                      ? isNight
+                        ? 'bg-teal-400/20 text-teal-200'
+                        : 'bg-amber-400/22 text-amber-200'
+                      : 'text-stone-300 hover:bg-white/8 hover:text-white'
+                  }`}
+                >
+                  <Orbit className="h-3.5 w-3.5 shrink-0" aria-hidden="true" />
+                  <span>Orbit</span>
+                </button>
+
+                <button
+                  type="button"
+                  onClick={onToggleSound}
+                  aria-pressed={soundEnabled}
+                  aria-label={soundEnabled ? 'Mute ambient soundscape' : 'Play ambient soundscape'}
+                  title={soundEnabled ? 'Mute ambient sound (M)' : 'Play ambient sound (M)'}
+                  className={`inline-flex items-center gap-1.5 whitespace-nowrap rounded-full px-3 py-1.5 text-xs font-medium transition-colors duration-150 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber-300 ${
+                    soundEnabled
+                      ? isNight
+                        ? 'bg-teal-400/20 text-teal-200'
+                        : 'bg-amber-400/22 text-amber-200'
+                      : 'text-stone-300 hover:bg-white/8 hover:text-white'
+                  }`}
+                >
+                  {soundEnabled ? (
+                    <Volume2 className="h-3.5 w-3.5 shrink-0" aria-hidden="true" />
+                  ) : (
+                    <VolumeX className="h-3.5 w-3.5 shrink-0" aria-hidden="true" />
+                  )}
+                  <span>Sound</span>
+                </button>
+              </div>
             </motion.nav>
           )}
         </AnimatePresence>
